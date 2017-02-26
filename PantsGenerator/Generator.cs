@@ -57,8 +57,8 @@ namespace PantsGenerator
             {
                 for (int x = sheet.Width - 1; x >= 0; x--)
                 {
-                    Color cFrom = sheet.GetPixel(x, y),
-                        cTo = template.GetPixel(x, y);
+                    Color cFrom = template.GetPixel(x, y),
+                        cTo = sheet.GetPixel(x, y);
 
                     if (cFrom != transparent && !cFrom.Equals(cTo) && cTo.A != 0)
                         conversions[cFrom] = cTo;

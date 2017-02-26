@@ -72,6 +72,8 @@ namespace PantsAndSleevesGenerator
                 string sleevesFilePath = directory.FullName + "\\" + generatedFileName.Replace("Pants", "Sleeves");
                 File.WriteAllText(sleevesFilePath, sleeves);
                 Console.WriteLine("Saved generated sleeves to {0}!", sleevesFilePath);
+                Clipboard.SetText(sleeves);
+                Console.WriteLine("Copied command to clipboard!");
             }
 
             WaitAndExit("Done!");
