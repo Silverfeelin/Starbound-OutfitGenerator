@@ -7,8 +7,8 @@
     <ProjectGuid>{57D51E53-A8AE-4412-8915-FB300A2B5061}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PantsAndSleevesGenerator</RootNamespace>
-    <AssemblyName>PantsAndSleevesGenerator</AssemblyName>
+    <RootNamespace>SleeveGenerator</RootNamespace>
+    <AssemblyName>SleeveGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -69,7 +69,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\template.txt" />
+    <Resource Include="Resources\sleeveTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\animatedSleevesTemplate.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

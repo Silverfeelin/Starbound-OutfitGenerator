@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PantsAndSleevesGenerator.Properties {
+namespace SleeveGenerator.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace PantsAndSleevesGenerator.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PantsAndSleevesGenerator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SleeveGenerator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,21 @@ namespace PantsAndSleevesGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /spawnitem minerchest 1 &apos;{&quot;description&quot;:&quot;Special thanks to Unxie for the sleeves template!&quot;,&quot;directives&quot;:&quot;?replace;9F9F10=00FF8000;7B7B7B=00FF8000;C9C922=00FF8000;F3F32F=00FF8000;B6B6B6=00FF8000;373737=00FF8000;E0975C={light};6f2919={dark};a85636={dark}&quot;,&quot;shortdescription&quot;: &quot;Sleeves!&quot;}}&apos;.
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static string template {
+        internal static System.Drawing.Bitmap animatedSleevesTemplate {
             get {
-                return ResourceManager.GetString("template", resourceCulture);
+                object obj = ResourceManager.GetObject("animatedSleevesTemplate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /spawnitem aviantier6schest 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Sleeves!&quot;,&quot;inventoryIcon&quot;:&quot;fsleeve.png:idle.1&quot;,&quot;directives&quot;:&quot;?replace;00000000=000000;ffffff00=ffffff;1b4c2a00=1b4c2a;d1e16000=d1e160;9bba3d00=9bba3d;d93a3a00=d93a3a;93262500=932625;60111900=601119?scale=0.4?blendscreen=/objects/outpost/customsign/signplaceholder.png;0;-4?replace;9c4f32=e10000;702450=e10000;a95b3b=008787;c5764b=008787;837655=008787;6d2785=00c3c3;8 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string sleeveTemplate {
+            get {
+                return ResourceManager.GetString("sleeveTemplate", resourceCulture);
             }
         }
     }

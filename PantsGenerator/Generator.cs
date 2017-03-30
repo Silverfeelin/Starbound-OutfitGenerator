@@ -17,7 +17,7 @@ namespace PantsGenerator
                 return Properties.Resources.animatedPantsTemplate;
             }
         }
-
+        
         /// <summary>
         /// Returns a value indicating whether the sheet is valid to generate drawables for.
         /// Only checks if the bitmap is null and if the dimensions match 387x258 or 387x301.
@@ -37,18 +37,9 @@ namespace PantsGenerator
         /// <returns>Spawnitem command for the custom pants.</returns>
         /// <exception cref="ArgumentNullException">Thrown if null is passed.</exception>
         /// <exception cref="GeneratorException">Thrown if the dimensions of the given sheet are not valid.</exception>
-        public static string Generate(Bitmap sheet)
+        public static string Generate(Bitmap sheet, Bitmap bitmapTemplate, string itemTemplate)
         {
-            
-            if (sheet == null)
-                throw new ArgumentNullException("Sheet may not be null.");
-
-            if (!ValidSheet(sheet))
-                throw new GeneratorException("Sheet dimensions must equal 387x258 or 387x301, to match the pants template.");
-
-            sheet = Crop(sheet);
-
-            Bitmap template = Template;
+            Bitmap template = bitmapTemplate;
             Dictionary<Color, Color> conversions = new Dictionary<Color, Color>();
 
             Color transparent = Color.FromArgb(0, 255, 255, 255);
@@ -67,7 +58,7 @@ namespace PantsGenerator
 
             // Create item
             string directives = CreateDirectives(conversions);
-            string item = Properties.Resources.template.Replace("{directives}", directives);
+            string item = itemTemplate.Replace("{directives}", directives);
             return item;
         }
 
@@ -77,7 +68,7 @@ namespace PantsGenerator
         /// </summary>
         /// <param name="sheet"></param>
         /// <returns></returns>
-        private static Bitmap Crop(Bitmap sheet)
+        public static Bitmap CropPants(Bitmap sheet)
         {
             return sheet.Size.Height == 301 ? sheet.Clone(new Rectangle(0, 0, 387, 258), sheet.PixelFormat) : sheet;
         }
@@ -88,9 +79,9 @@ namespace PantsGenerator
         /// <param name="directory"></param>
         /// <param name="content"></param>
         /// <returns>Generated file name</returns>
-        public static string Save(DirectoryInfo directory, string content)
+        public static string Save(DirectoryInfo directory, string content, string fileNamePrefix = "generatedPants")
         {
-            string file = string.Format("generatedPants-{0}.txt", DateTime.Now.ToString("h-mm-ss"));
+            string file = string.Format("{0}-{1}.txt", fileNamePrefix, DateTime.Now.ToString("h-mm-ss"));
             File.WriteAllText(directory.FullName + "\\" + file, content);
             return file;
         }

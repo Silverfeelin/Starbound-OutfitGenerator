@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PantsAndSleevesGenerator
+namespace SleeveGenerator
 {
     class Program
     {
@@ -35,7 +35,13 @@ namespace PantsAndSleevesGenerator
             string item;
             try
             {
-                item = PantsGenerator.Generator.Generate(target);
+                if (target == null)
+                    throw new ArgumentNullException("Sheet may not be null.");
+
+                if (target.Width != 387 || target.Height != 602)
+                    throw new PantsGenerator.GeneratorException("Sheet dimensions must equal 387x602, to match the sleeve template.");
+                
+                item = PantsGenerator.Generator.Generate(target, Properties.Resources.animatedSleevesTemplate, Properties.Resources.sleeveTemplate);
             }
             catch (Exception exc)
             {
@@ -43,39 +49,18 @@ namespace PantsAndSleevesGenerator
                 return;
             }
 
+
             DirectoryInfo directory = (new FileInfo(args[0])).Directory;
 
             // Save to disk
-            string generatedFileName = PantsGenerator.Generator.Save(directory, item);
+            string generatedFileName = PantsGenerator.Generator.Save(directory, item, "generatedSleeves");
             string generatedFilePath = directory + "\\" + generatedFileName;
-            Console.WriteLine("Saved generated pants to {0}!", generatedFilePath);
+            Console.WriteLine("Saved generated sleeves to {0}!", generatedFilePath);
 
             // Copy to clipboard
             Clipboard.SetText(item);
             Console.WriteLine("Copied command to clipboard!");
-
-            // Sleeves
-            Console.WriteLine("Would you also like some sleeves with that?\nY/N");
-            ConsoleKeyInfo cki = Console.ReadKey();
-            Console.WriteLine();
-            if (cki.Key == ConsoleKey.Y)
-            {
-                string lightColor, darkColor;
-                Console.WriteLine("Enter outer (dark) sleeve color:");
-                darkColor = Console.ReadLine();
-                Console.WriteLine("Enter inner (light) sleeve color:");
-                lightColor = Console.ReadLine();
-
-                string sleeves = Properties.Resources.template;
-                sleeves = sleeves.Replace("{light}", lightColor).Replace("{dark}", darkColor);
-
-                string sleevesFilePath = directory.FullName + "\\" + generatedFileName.Replace("Pants", "Sleeves");
-                File.WriteAllText(sleevesFilePath, sleeves);
-                Console.WriteLine("Saved generated sleeves to {0}!", sleevesFilePath);
-                Clipboard.SetText(sleeves);
-                Console.WriteLine("Copied command to clipboard!");
-            }
-
+            
             WaitAndExit("Done!");
         }
 

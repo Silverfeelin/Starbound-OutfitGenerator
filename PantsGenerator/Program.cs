@@ -35,7 +35,15 @@ namespace PantsGenerator
             string item;
             try
             {
-                item = PantsGenerator.Generator.Generate(target);
+                if (target == null)
+                    throw new ArgumentNullException("Sheet may not be null.");
+
+                if (!Generator.ValidSheet(target))
+                    throw new GeneratorException("Sheet dimensions must equal 387x258 or 387x301, to match the pants template.");
+
+                target = Generator.CropPants(target);
+
+                item = Generator.Generate(target, Generator.Template, Properties.Resources.template);
             }
             catch (Exception exc)
             {

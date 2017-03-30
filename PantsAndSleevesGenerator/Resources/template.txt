@@ -1,1 +1,0 @@
-/spawnitem minerchest 1 '{"description":"Special thanks to Unxie for the sleeves template!","directives":"?replace;9F9F10=00FF8000;7B7B7B=00FF8000;C9C922=00FF8000;F3F32F=00FF8000;B6B6B6=00FF8000;373737=00FF8000;E0975C={light};6f2919={dark};a85636={dark}","shortdescription": "Sleeves!"}'

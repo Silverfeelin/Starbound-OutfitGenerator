@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantsGenerator", "PantsGenerator\PantsGenerator.csproj", "{2EEEFD28-549F-4B53-8A7E-3FC49B75EBDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantsAndSleevesGenerator", "PantsAndSleevesGenerator\PantsAndSleevesGenerator.csproj", "{57D51E53-A8AE-4412-8915-FB300A2B5061}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleeveGenerator", "SleeveGenerator\SleeveGenerator.csproj", "{57D51E53-A8AE-4412-8915-FB300A2B5061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
