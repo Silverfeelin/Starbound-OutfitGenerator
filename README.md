@@ -24,6 +24,7 @@ For the sleeves of your outfit; these should be drawn on separate sprite sheets.
 This tool requires [.NET Framework 4.5](https://www.microsoft.com/en-US/download/details.aspx?id=30653).
 
 * Download and extract the [latest release](https://github.com/Silverfeelin/Starbound-OutfitGenerator/releases).
+  * Make sure both files are in the same folder. The sleeves generator depends on the pants generator to work.
 
 ## Usage
 
