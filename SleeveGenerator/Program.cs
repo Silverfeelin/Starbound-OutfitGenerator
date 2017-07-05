@@ -28,9 +28,18 @@ namespace SleeveGenerator
                 WaitAndExit("The file \"{0}\" is not a valid image or does not exist.", args[0]);
                 return;
             }
-
-            // Generating code
+            
+            // Begin
             Console.WriteLine("Starting generation.");
+            Console.WriteLine("");
+
+            // Warn of memory leak (https://github.com/Silverfeelin/Starbound-OutfitGenerator/issues/1)
+            Console.WriteLine("== WARNING ==");
+            Console.WriteLine("Please note that the 64-bit build of Starbound (1.3.1) has a memory leak, which generated sleeves suffer from.");
+            Console.WriteLine("Consider using the 32-bit build of Starbound instead.");
+            Console.WriteLine("If anyone else suffers from this problem, please recommend this temporary solution.");
+            Console.WriteLine("=============");
+            Console.WriteLine("");
 
             string item;
             try
@@ -48,8 +57,7 @@ namespace SleeveGenerator
                 WaitAndExit(exc.Message);
                 return;
             }
-
-
+            
             DirectoryInfo directory = (new FileInfo(args[0])).Directory;
 
             // Save to disk
@@ -60,7 +68,8 @@ namespace SleeveGenerator
             // Copy to clipboard
             Clipboard.SetText(item);
             Console.WriteLine("Copied command to clipboard!");
-            
+            Console.WriteLine("");
+
             WaitAndExit("Done!");
         }
 
