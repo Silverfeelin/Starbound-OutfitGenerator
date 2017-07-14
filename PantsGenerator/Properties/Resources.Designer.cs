@@ -71,12 +71,16 @@ namespace PantsGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {
-        ///    &quot;count&quot;: 125,
-        ///    &quot;name&quot;: &quot;florantier6apants&quot;,
-        ///    &quot;parameters&quot;: {
-        ///        &quot;description&quot;: &quot;Because you need the freedom of movement when your running the dark side of business.&quot;,
-        ///        &quot;directives&quot;: &quot;?replace;ffffff00=ffffff;00000000=ffffff;ffca8a00=ffffff;e0975c00=ffffff;a8563600=ffffff;6f291900=ffffff;9bba3d00=ffffff;48832f00=ffffff;1b4c2a00=ffffff;a4784400=ffffff;754c2300=ffffff;472b1300=ffffff;e7dfbd00=ffffff;320c4000=ffffff?scale=0.4?scale=0.7?replace;a0b03e=00a10000;7e9b35=00a20000;a5ba92 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to /spawnitem froggmerchantlegs 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Pants!&quot;,&quot;inventoryIcon&quot;:&quot;pantsm.png:idle.2&quot;,&quot;directives&quot;:&quot;?scale=0.4?scale=0.7?scale=0.85?crop;6;1;7;2?replace;45572af4=00a10000;4e6530f8=00a20000;4f6631f7=00a30000;445729f7=00a40000;4f6531f5=00a50000;487035fc=00a60000;445e2df8=00a70000;556733f4=00b10000;4a4122f6=00b20000;425929f0=00b30000;3e2f1cb7=00b40000;664d39bb=00b50000;425b2df2=00b60000;54201e7f=00b70000;56 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string invisibleTemplate {
+            get {
+                return ResourceManager.GetString("invisibleTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /spawnitem florantier6apants 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Pants!&quot;,&quot;inventoryIcon&quot;:&quot;pants.png:idle.2&quot;,&quot;directives&quot;:&quot;?replace;ffffff00=ffffff;00000000=ffffff;ffca8a00=ffffff;e0975c00=ffffff;a8563600=ffffff;6f291900=ffffff;9bba3d00=ffffff;48832f00=ffffff;1b4c2a00=ffffff;a4784400=ffffff;754c2300=ffffff;472b1300=ffffff;e7dfbd00=ffffff;320c4000=ffffff?scale=0.4?scale=0.7?replace;a0b03e=00a10000;7e9b35=00a20000;a5ba92=00a30000 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string template {
             get {

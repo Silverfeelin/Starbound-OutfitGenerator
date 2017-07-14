@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleWriter.cs" />
     <Compile Include="GeneratorException.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Program.cs" />
@@ -67,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\template.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invisibleTemplate.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
