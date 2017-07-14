@@ -31,6 +31,7 @@ This tool requires [.NET Framework 4.5](https://www.microsoft.com/en-US/download
 * Sprite your outfit, or use an existing spritesheet. Templates can be found in the [templates](https://github.com/Silverfeelin/Starbound-OutfitGenerator/tree/master/templates) folder.
   * The climb frames are not used, so it is highly recommended to keep them out of your spritesheet.
 * Drag your spritesheet (preferably a 32-bit depth PNG) on top of the `PantsGenerator` executable.
+* If asked, make any selections by pressing the corresponding key (usually a number).
 * Use the generated `/spawnitem` command in-game.
   * This requires `/admin` mode to be active.
   * The command is saved to a file and also copied directly to your clipboard.
