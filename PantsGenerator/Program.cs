@@ -41,13 +41,16 @@ namespace PantsGenerator
             }
             catch (Exception exc)
             {
-                if (!Generator.ValidSheet(target))
-                    throw new GeneratorException("Sheet dimensions must equal 387x258 or 387x301, to match the pants template.");
-
-                target = Generator.CropPants(target);
                 WaitAndExit(exc.Message);
                 return;
             }
+
+            if (!Generator.ValidSheet(target))
+            {
+                WaitAndExit("Sheet dimensions must equal 387x258 or 387x301, to match the pants template.");
+            }
+
+            target = Generator.CropPants(target);
 
             // Check/Prompt args
             GenerationOptions options = ParseArgs(args);
