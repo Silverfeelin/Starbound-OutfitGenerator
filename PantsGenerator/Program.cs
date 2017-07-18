@@ -129,7 +129,7 @@ namespace PantsGenerator
         {
             while (true)
             {
-                Console.WriteLine("Would you like your hide your character's body?");
+                Console.WriteLine("Would you like to hide your character's body?");
                 writer.WriteLine("[1] Show. [2] Hide.");
 
                 var cki = Console.ReadKey(true);
