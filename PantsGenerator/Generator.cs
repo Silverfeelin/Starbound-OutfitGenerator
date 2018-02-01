@@ -10,13 +10,7 @@ namespace PantsGenerator
         /// <summary>
         /// Returns the template, used for generating animated pants.
         /// </summary>
-        public static Bitmap Template
-        {
-            get
-            {
-                return Properties.Resources.animatedPantsTemplate;
-            }
-        }
+        public static Bitmap Template { get; set; } = Properties.Resources.animatedPantsTemplate;
         
         /// <summary>
         /// Returns a value indicating whether the sheet is valid to generate drawables for.

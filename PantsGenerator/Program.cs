@@ -58,6 +58,12 @@ namespace PantsGenerator
             // Get template
             string txtTemplate = options.HideBody.Value ? Properties.Resources.invisibleTemplate : Properties.Resources.template;
             
+            // Set image template
+            if (options.HideBody.Value)
+            {
+                Generator.Template = options.HideBody.Value ? Properties.Resources.invisibleAnimatedPantsTemplate : Properties.Resources.animatedPantsTemplate;
+            }
+
             // Generating code
             Console.WriteLine("Starting generation. This shouldn't take long.");
 
