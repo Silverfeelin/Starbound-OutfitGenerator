@@ -70,13 +70,13 @@ namespace OutfitGenerator
         {
             Bitmap result = new Bitmap(SLEEVES_WIDTH, SLEEVES_HEIGHT * 2);
 
-            Superimpose(ref result, frontSleeves, 0, 0);
-            Superimpose(ref result, backSleeves, 0, SLEEVES_HEIGHT);
+            Superimpose(result, frontSleeves, 0, 0);
+            Superimpose(result, backSleeves, 0, SLEEVES_HEIGHT);
 
             return result;
         }
 
-        private static void Superimpose(ref Bitmap largeBmp, Bitmap smallBmp, int x, int y)
+        private static void Superimpose(Bitmap largeBmp, Bitmap smallBmp, int x, int y)
         {
             Graphics g = Graphics.FromImage(largeBmp);
             g.DrawImage(smallBmp, x, y, smallBmp.Width, smallBmp.Height);
