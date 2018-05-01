@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace PantsGenerator
+namespace OutfitGenerator
 {
     public static class Generator
     {
@@ -43,6 +43,25 @@ namespace PantsGenerator
             string directives = CreateDirectives(conversions);
             string item = itemTemplate.Replace("{directives}", directives);
             return item;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the sheet is valid to generate drawables for.
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="acceptedSizes"></param>
+        /// <returns></returns>
+        public static bool ValidSheet(Bitmap sheet, params Size[] acceptedSizes)
+        {
+            if (sheet == null)
+                return false;
+
+            foreach (Size size in acceptedSizes)
+            {
+                if (sheet.Size == size)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
