@@ -35,4 +35,4 @@ This tool requires [.NET Framework 4.5](https://www.microsoft.com/en-US/download
 * Use the generated `/spawnitem` command in-game.
   * The command is saved to a file and also copied directly to your clipboard.
 
-For custom sleevs, it is highly recommended to use a provided template. The front and back sleeve sheets have to be combined into one sheet for the tool. You can also sprite the front and back sleeves separately and merge them later by dragging both files on top of the application.
+For custom sleeves, it is highly recommended to use a provided template. The front and back sleeve sheets have to be combined into one sheet for the tool. You can also sprite the front and back sleeves separately and merge them later by dragging both files on top of the application.
