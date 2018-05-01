@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace PantsGenerator
+namespace OutfitGenerator
 {
     public static class Generator
     {
@@ -11,17 +11,6 @@ namespace PantsGenerator
         /// Returns the template, used for generating animated pants.
         /// </summary>
         public static Bitmap Template { get; set; } = Properties.Resources.animatedPantsTemplate;
-        
-        /// <summary>
-        /// Returns a value indicating whether the sheet is valid to generate drawables for.
-        /// Only checks if the bitmap is null and if the dimensions match 387x258 or 387x301.
-        /// </summary>
-        /// <param name="sheet"></param>
-        /// <returns></returns>
-        public static bool ValidSheet(Bitmap sheet)
-        {
-            return sheet != null && (sheet.Size == new Size(387, 258) || sheet.Size == new Size(387, 301));
-        }
 
         /// <summary>
         /// Generates a spawnitem command for the generated pants.
@@ -54,6 +43,25 @@ namespace PantsGenerator
             string directives = CreateDirectives(conversions);
             string item = itemTemplate.Replace("{directives}", directives);
             return item;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the sheet is valid to generate drawables for.
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="acceptedSizes"></param>
+        /// <returns></returns>
+        public static bool ValidSheet(Bitmap sheet, params Size[] acceptedSizes)
+        {
+            if (sheet == null)
+                return false;
+
+            foreach (Size size in acceptedSizes)
+            {
+                if (sheet.Size == size)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

@@ -7,16 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BackGenerator
+namespace OutfitGenerator
 {
-    class Program
+    class BackGenerator
     {
-        [STAThread]
-        static void Main(string[] args)
+        private static Size BACKITEM_SIZE = new Size(387, 301);
+
+        public static void Generate(string[] args)
         {
             // Parameter checking
             if (args.Length != 1)
-                WaitAndExit("Improper usage! Expected parameter: <image_path>\n" +
+                Program.WaitAndExit("Improper usage! Expected parameter: <image_path>\n" +
                             "Try dragging your image file directly on top of the application!");
 
             // Image checking
@@ -28,7 +29,7 @@ namespace BackGenerator
             }
             catch (ArgumentException)
             {
-                WaitAndExit("The file \"{0}\" is not a valid image or does not exist.", args[0]);
+                Program.WaitAndExit("The file \"{0}\" is not a valid image or does not exist.", args[0]);
                 return;
             }
 
@@ -42,21 +43,21 @@ namespace BackGenerator
                 if (target == null)
                     throw new ArgumentNullException("Sheet may not be null.");
 
-                if (target.Width != 387 || target.Height != 301)
-                    throw new PantsGenerator.GeneratorException("Sheet dimensions must equal 387x301, to match the back template.");
+                if (!Generator.ValidSheet(target, BACKITEM_SIZE))
+                    throw new GeneratorException($"Sheet dimensions must equal {BACKITEM_SIZE.Width}x{BACKITEM_SIZE.Height}, to match the back template.");
 
-                item = PantsGenerator.Generator.Generate(target, Properties.Resources.animatedBackTemplate, Properties.Resources.template);
+                item = Generator.Generate(target, Properties.Resources.animatedBackTemplate, Properties.Resources.backTemplate);
             }
             catch (Exception exc)
             {
-                WaitAndExit(exc.Message);
+                Program.WaitAndExit(exc.Message);
                 return;
             }
 
             DirectoryInfo directory = (new FileInfo(args[0])).Directory;
 
             // Save to disk
-            string generatedFileName = PantsGenerator.Generator.Save(directory, item, "generatedBack");
+            string generatedFileName = Generator.Save(directory, item, "generatedBack");
             string generatedFilePath = directory + "\\" + generatedFileName;
             Console.WriteLine("Saved generated back item to {0}!", generatedFilePath);
 
@@ -65,16 +66,7 @@ namespace BackGenerator
             Console.WriteLine("Copied command to clipboard!");
             Console.WriteLine("");
 
-            WaitAndExit("Done!");
-        }
-
-        public static void WaitAndExit(string message = null, params object[] args)
-        {
-            if (!string.IsNullOrEmpty(message))
-                Console.WriteLine(message, args);
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-            Environment.Exit(0);
+            Program.WaitAndExit("Done!");
         }
     }
 }

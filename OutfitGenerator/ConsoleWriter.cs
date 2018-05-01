@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PantsGenerator
+namespace OutfitGenerator
 {
     public class ConsoleWriter
     {
