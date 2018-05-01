@@ -55,7 +55,10 @@ namespace OutfitGenerator
 
             if (!Generator.ValidSheet(chestBitmap, chestSize) || !Generator.ValidSheet(pantsBitmap, pantsSize, pantsOldSize))
             {
-                Program.WaitAndExit("Incorrent size!");
+                Program.WaitAndExit("Incorrect size!\nExpected chest dimensions of {0}x{1} and pants dimensions of {2}x{3} or {4}x{5}.", 
+                    chestSize.Width, chestSize.Height,
+                    pantsSize.Width, pantsSize.Height,
+                    pantsOldSize.Width, pantsOldSize.Height);
                 return null;
             }
 

@@ -59,7 +59,8 @@ namespace OutfitGenerator
 
             if (!Generator.ValidSheet(frontSleeves, sleevesSize) || !Generator.ValidSheet(frontSleeves, sleevesSize))
             {
-                Program.WaitAndExit("Incorrent size!");
+                Program.WaitAndExit("Incorrect size!\nExpected sleeve dimensions of {0}x{1} for both files.",
+                    sleevesSize.Width, sleevesSize.Height);
                 return null;
             }
 
