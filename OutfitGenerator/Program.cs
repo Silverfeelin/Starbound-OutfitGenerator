@@ -6,13 +6,29 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using OutfitGenerator.Generators;
+using OutfitGenerator.Mergers;
+using OutfitGenerator.Util;
 
 namespace OutfitGenerator
 {
     class Program
     {
         private static ConsoleWriter writer;
+        private static Dictionary<Type, string> visualNames = new Dictionary<Type, string>()
+        {
+            { typeof(HatGenerator), "Hat" },
+            { typeof(SleeveGenerator), "Sleeves" },
+            { typeof(PantsGenerator), "Pants" },
+            { typeof(HidingPantsGenerator), "Pants (Hide body)" },
+            { typeof(BackGenerator), "Back Item" },
 
+            { typeof(ChestPantsMerger), "Merge Chest & Pants" },
+            { typeof(SleevesMerger), "Merge Sleeves" }
+        };
+
+        // TODO: Clean this method up a bit more.
         [STAThread]
         static void Main(string[] args)
         {
@@ -22,36 +38,58 @@ namespace OutfitGenerator
 
             writer.WriteLine("Select the desired generator:");
 
-            Type generatorType = null;
+            if (args.Length > 2)
+            {
+                WaitAndExit($"Invalid number of parameters: {args.Length}. Expected 1 for outfit generation or 2 for sprite merging.");
+                return;
+            }
+
+            // Read images.
+            Bitmap[] images = new Bitmap[args.Length];
+            try
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    images[i] = new Bitmap(args[i]);
+                }
+            }
+            catch (Exception exc)
+            {
+                WaitAndExit("Couldn't read image file: {0}", exc.Message);
+                return;
+            }
+
+            // Prompt generator/merge type.
+            Type generatorType;
             switch (args.Length)
             {
                 case 0:
                     WaitAndExit("Please drag and drop a valid image on the application (not this window).");
                     break;
                 case 1:
-                    generatorType = SelectGenerator(typeof(PantsGenerator), typeof(SleeveGenerator), typeof(BackGenerator));
+                    // Prompt clothing to generate
+                    generatorType = SelectGenerator(typeof(HatGenerator), typeof(SleeveGenerator), typeof(PantsGenerator), typeof(HidingPantsGenerator), typeof(BackGenerator));
+
+                    // Generate clothing
+                    IClothingGenerator generator = (IClothingGenerator)Activator.CreateInstance(generatorType);
+                    GenerateClothing(generator, images[0]);
                     break;
                 case 2:
+                    // Prompt sprites to merge
                     generatorType = SelectGenerator(typeof(ChestPantsMerger), typeof(SleevesMerger));
-                    break;
-                default:
-                    WaitAndExit($"Invalid number of parameters: {args.Length}.");
+                    ISpriteMerger merger = (ISpriteMerger)Activator.CreateInstance(generatorType);
+                    MergeSprites(merger, args[0], args[1]);
+                    // Merge sprites
                     break;
             }
-
-            //create the instance of class using System.Activator class 
-            object obj = Activator.CreateInstance(generatorType);
-            object[] parameters = new object[] { args };
-
-            MethodInfo process = generatorType.GetMethod("Generate");
-            process.Invoke(obj, parameters);
         }
 
         private static Type SelectGenerator(params Type[] typeNames)
         {
             for (int i = 0; i < typeNames.Length; i++)
             {
-                writer.WriteLine($"[{i + 1}]: {typeNames[i].Name}");
+                string visualName = visualNames[typeNames[i]];
+                writer.WriteLine($"[{i + 1}]: {visualName}");
             }
 
             while (true)
@@ -65,6 +103,37 @@ namespace OutfitGenerator
                     if (--choice < typeNames.Length)
                         return typeNames[choice];
                 }
+            }
+        }
+
+        private static void GenerateClothing(IClothingGenerator generator, Bitmap bmp)
+        {
+            try
+            {
+                ItemDescriptor item = generator.Generate(bmp);
+                string s = CommandGenerator.SpawnItem(item);
+                string file = string.Format("{0} {1}.txt", generator.FileName, DateTime.Now.ToString("MM-dd h.mm.ss"));
+                File.WriteAllText(file, s);
+                WaitAndExit("Saved command to {0}", file);
+            }
+            catch (Exception exc)
+            {
+                WaitAndExit("Failed to create clothing: {0}", exc.Message);
+            }
+        }
+
+        private static void MergeSprites(ISpriteMerger merger, string a, string b)
+        {
+            try
+            {
+                Bitmap merged = merger.Merge(a, b);
+                string file = string.Format("merged {0}.png", DateTime.Now.ToString("MM-dd h.mm.ss"));
+                merged.Save(file);
+                WaitAndExit("Saved image to {0}", file);
+            }
+            catch (Exception exc)
+            {
+                WaitAndExit("Failed to merge sprites: {0}", exc.Message);
             }
         }
 

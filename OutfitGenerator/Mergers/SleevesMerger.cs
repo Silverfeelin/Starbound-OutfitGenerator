@@ -5,30 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OutfitGenerator
+namespace OutfitGenerator.Mergers
 {
-    class SleevesMerger
+    public class SleevesMerger : ISpriteMerger
     {
         private const int SLEEVES_WIDTH = 387;
         private const int SLEEVES_HEIGHT = 301;
         private static Size sleevesSize = new Size(SLEEVES_WIDTH, SLEEVES_HEIGHT);
-
-        public static void Generate(string[] args)
-        {
-            Bitmap result = null;
-
-            if (args.Length != 2)
-                Program.WaitAndExit("Improper usage! Expected parameters: <image_path_1> <image_path_2>\n" +
-                            "Try dragging your image files directly on top of the application!");
-
-            result = Sleeves(args[0], args[1]);
-            string name = "mergedSleeves" + DateTime.Now.ToString(" MM.dd h.mm.ss") + ".png";
-            result.Save(name);
-            Program.WaitAndExit("Done saving, check \"" + name + "\"");
-            return;
-        }
-
-        private static Bitmap Sleeves(string firstPath, string secondPath)
+        
+        public Bitmap Merge(string firstPath, string secondPath)
         {
             Bitmap frontSleeves;
             Bitmap backSleeves;
@@ -57,12 +42,14 @@ namespace OutfitGenerator
                 return null;
             }
 
+            /*
             if (!Generator.ValidSheet(frontSleeves, sleevesSize) || !Generator.ValidSheet(frontSleeves, sleevesSize))
             {
                 Program.WaitAndExit("Incorrect size!\nExpected sleeve dimensions of {0}x{1} for both files.",
                     sleevesSize.Width, sleevesSize.Height);
                 return null;
             }
+            */
 
             return ApllyMultingSleeves(frontSleeves, backSleeves);
         }

@@ -2,6 +2,9 @@
 
 namespace OutfitGenerator
 {
+    /// <summary>
+    /// Simple helper class to write colored text to the standard output.
+    /// </summary>
     public class ConsoleWriter
     {
         public ConsoleColor DefaultColor { get; set; } = ConsoleColor.Cyan;
