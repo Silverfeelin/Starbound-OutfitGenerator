@@ -9,7 +9,7 @@ A tool that specializes in creating multiplayer compatible animated clothing. To
 ## Installation
 
 Download and unpack the latest release from the [Releases](https://github.com/Silverfeelin/Starbound-OutfitGenerator/releases) page.  
-Make sure you download the Outfit Generator and not the source coude.
+Make sure you download the Outfit Generator and not the source code.
 
 If you're updating to a newer version of the tool, simply overwrite all files when asked.
 
