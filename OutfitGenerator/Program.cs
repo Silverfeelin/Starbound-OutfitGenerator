@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using OutfitGenerator.Generators;
 using OutfitGenerator.Mergers;
@@ -116,7 +117,8 @@ namespace OutfitGenerator
                 string s = CommandGenerator.SpawnItem(item);
                 string file = string.Format("{0} {1}.txt", generator.FileName, DateTime.Now.ToString("MM-dd h.mm.ss"));
                 File.WriteAllText(file, s);
-                WaitAndExit("Saved command to {0}", file);
+                Clipboard.SetText(s);
+                WaitAndExit("Saved command to {0} and copied into clipboard", file);
             }
             catch (Exception exc)
             {
