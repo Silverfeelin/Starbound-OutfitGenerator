@@ -16,9 +16,11 @@ namespace OutfitGenerator
     class Program
     {
         private static ConsoleWriter writer;
-        private static Dictionary<Type, string> visualNames = new Dictionary<Type, string>()
+        private static readonly Dictionary<Type, string> visualNames = new Dictionary<Type, string>()
         {
             { typeof(HatGenerator), "Hat" },
+            { typeof(MaskedHatGenerator), "Hat (Hide hair)" },
+            { typeof(HidingHatGenerator), "Hat (Hide body)" },
             { typeof(SleeveGenerator), "Sleeves" },
             { typeof(PantsGenerator), "Pants" },
             { typeof(HidingPantsGenerator), "Pants (Hide body)" },
@@ -68,7 +70,7 @@ namespace OutfitGenerator
                     break;
                 case 1:
                     // Prompt clothing to generate
-                    generatorType = SelectGenerator(typeof(HatGenerator), typeof(SleeveGenerator), typeof(PantsGenerator), typeof(HidingPantsGenerator), typeof(BackGenerator));
+                    generatorType = SelectGenerator(typeof(HatGenerator), typeof(MaskedHatGenerator), typeof(HidingHatGenerator), typeof(SleeveGenerator), typeof(PantsGenerator), typeof(HidingPantsGenerator), typeof(BackGenerator));
 
                     // Generate clothing
                     IClothingGenerator generator = (IClothingGenerator)Activator.CreateInstance(generatorType);

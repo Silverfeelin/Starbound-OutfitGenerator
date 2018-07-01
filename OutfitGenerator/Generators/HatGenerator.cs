@@ -11,7 +11,7 @@ namespace OutfitGenerator.Generators
     {
         public override string FileName => "hat";
 
-        private ISet<Size> _supportedDimensions = new HashSet<Size>()
+        private readonly ISet<Size> _supportedDimensions = new HashSet<Size>()
         {
             new Size(86, 215),
             new Size(43, 43)

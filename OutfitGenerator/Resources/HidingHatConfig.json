@@ -1,0 +1,16 @@
+{
+  "descriptor": {
+    "name": "frogghead",
+    "count": 1,
+    "parameters": {
+      "shortdescription": "Custom Hat",
+      "description": "Made using the Outfit Generator.",
+      "inventoryIcon": "head.png",
+      "directives": "",
+      "maleFrames": "head.png",
+      "femaleFrames": "head.png",
+      "mask": "mask.png",
+      "statusEffects": []
+    }
+  }
+}
