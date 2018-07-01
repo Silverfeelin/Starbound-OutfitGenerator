@@ -127,19 +127,22 @@
   <data name="animatedSleevesTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\animatedSleevesTemplate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="backTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\backTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="BackConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackConfig.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="HatConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HatConfig.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="invisibleAnimatedPantsTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\invisibleAnimatedPantsTemplate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="invisiblePantsTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\invisiblePantsTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="PantsConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PantsConfig.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pantsTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pantsTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="SleevesConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SleevesConfig.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sleeveTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sleeveTemplate.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1251</value>
+  <data name="HidingPantsConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HidingPantsConfig.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

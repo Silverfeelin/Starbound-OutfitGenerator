@@ -91,11 +91,32 @@ namespace OutfitGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /spawnitem tigertailback 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Back!&quot;,&quot;inventoryIcon&quot;:&quot;back.png:idle.1&quot;,&quot;directives&quot;:&quot;?scale=0.4?scale=0.7?scale=0.84?crop;4;2;5;3?replace;aa836459=00a10000;bb885e4e=00a20000;cb926431=00a30000;cb95693b=00a40000;cf91601c=00a50000;ce966b4b=00a60000;e6c2a50c=00a70000;cc93662e=00b10000;cc8c5921=00b20000;c1895c3d=00b30000;bf885c41=00b40000;cb8e5d2d=00b50000;c7895728=00b60000;ac7c5558=00b70000;b8a99d5d= [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string backTemplate {
+        internal static byte[] BackConfig {
             get {
-                return ResourceManager.GetString("backTemplate", resourceCulture);
+                object obj = ResourceManager.GetObject("BackConfig", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] HatConfig {
+            get {
+                object obj = ResourceManager.GetObject("HatConfig", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] HidingPantsConfig {
+            get {
+                object obj = ResourceManager.GetObject("HidingPantsConfig", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -110,29 +131,22 @@ namespace OutfitGenerator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /spawnitem froggmerchantlegs 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;hideBody&quot;:true,&quot;shortdescription&quot;:&quot;Custom Pants!&quot;,&quot;inventoryIcon&quot;:&quot;pantsm.png:idle.2&quot;,&quot;directives&quot;:&quot;?scale=0.4?scale=0.7?scale=0.85?crop;6;1;7;2?replace;45572af4=00a10000;4e6530f8=00a20000;4f6631f7=00a30000;445729f7=00a40000;4f6531f5=00a50000;487035fc=00a60000;445e2df8=00a70000;556733f4=00b10000;4a4122f6=00b20000;425929f0=00b30000;3e2f1cb7=00b40000;664d39bb=00b50000;425b2df2=00b60000;5420 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string invisiblePantsTemplate {
+        internal static byte[] PantsConfig {
             get {
-                return ResourceManager.GetString("invisiblePantsTemplate", resourceCulture);
+                object obj = ResourceManager.GetObject("PantsConfig", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /spawnitem florantier6apants 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Pants!&quot;,&quot;inventoryIcon&quot;:&quot;pants.png:idle.2&quot;,&quot;directives&quot;:&quot;?scale=0.4?scale=0.7?crop;6;2;7;3?hueshift=114.43?multiply=00ff00?scale=2?blendscreen=/objects/outpost/customsign/customsignframe.png;0;-1?blendscreen=/interface/ai/body.png;-1;0?multiply=79ff5300?scale=47?crop;1;1;44;44{directives}&quot;}&apos;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string pantsTemplate {
+        internal static byte[] SleevesConfig {
             get {
-                return ResourceManager.GetString("pantsTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to /spawnitem aviantier6schest 1 &apos;{&quot;description&quot;:&quot;Special thanks to Nettle Boy for all the hard work behind this method!&quot;,&quot;shortdescription&quot;:&quot;Custom Sleeves!&quot;,&quot;inventoryIcon&quot;:&quot;fsleeve.png:idle.1&quot;,&quot;directives&quot;:&quot;?replace;00000000=000000;ffffff00=ffffff;1b4c2a00=1b4c2a;d1e16000=d1e160;9bba3d00=9bba3d;d93a3a00=d93a3a;93262500=932625;60111900=601119?scale=0.4?blendscreen=/objects/outpost/customsign/signplaceholder.png;0;-4?replace;9c4f32=e10000;702450=e10000;a95b3b=008787;c5764b=008787;837655=008787;6d2785=00c3c3;8 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string sleeveTemplate {
-            get {
-                return ResourceManager.GetString("sleeveTemplate", resourceCulture);
+                object obj = ResourceManager.GetObject("SleevesConfig", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }
