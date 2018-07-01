@@ -113,6 +113,16 @@ namespace OutfitGenerator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] HidingHatConfig {
+            get {
+                object obj = ResourceManager.GetObject("HidingHatConfig", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] HidingPantsConfig {
             get {
                 object obj = ResourceManager.GetObject("HidingPantsConfig", resourceCulture);
@@ -127,6 +137,16 @@ namespace OutfitGenerator.Properties {
             get {
                 object obj = ResourceManager.GetObject("invisibleAnimatedPantsTemplate", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] MaskedHatConfig {
+            get {
+                object obj = ResourceManager.GetObject("MaskedHatConfig", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

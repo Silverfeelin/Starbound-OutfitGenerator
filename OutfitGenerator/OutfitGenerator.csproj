@@ -52,6 +52,8 @@
     <Compile Include="Generators\HatGenerator.cs" />
     <Compile Include="Generators\HidingPantsGenerator.cs" />
     <Compile Include="Generators\IClothingGenerator.cs" />
+    <Compile Include="Generators\MaskedHatGenerator.cs" />
+    <Compile Include="Generators\HidingHatGenerator.cs" />
     <Compile Include="ItemDescriptor.cs" />
     <Compile Include="Mergers\ChestPantsMerger.cs" />
     <Compile Include="Mergers\ISpriteMerger.cs" />
@@ -74,7 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Resources\HidingHatConfig.json" />
     <None Include="Resources\HidingPantsConfig.json" />
+    <None Include="Resources\MaskedHatConfig.json" />
     <Resource Include="Resources\HatConfig.json" />
     <Resource Include="Resources\SleevesConfig.json" />
     <Resource Include="Resources\BackConfig.json" />

@@ -40,5 +40,14 @@ namespace OutfitGenerator.Generators
 
             return descriptor;
         }
+
+        /// <summary>
+        /// Crops out the bottom (unused) row for larger pants sprites.
+        /// It's not really necessary, but whatever.
+        /// </summary>
+        public static Bitmap Crop(Bitmap bmp, int x, int y, int width, int height)
+        {
+            return bmp.Clone(new Rectangle(x, y, width, height), bmp.PixelFormat);
+        }
     }
 }

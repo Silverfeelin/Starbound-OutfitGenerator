@@ -8,7 +8,7 @@ namespace OutfitGenerator.Generators
     {
         public override string FileName => "sleeves";
 
-        private ISet<Size> _supportedDimensions = new HashSet<Size>()
+        private readonly ISet<Size> _supportedDimensions = new HashSet<Size>()
         {
             new Size(387,602)
         };
