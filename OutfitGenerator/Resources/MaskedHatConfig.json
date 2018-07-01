@@ -9,7 +9,7 @@
       "directives": "",
       "maleFrames": "head.png",
       "femaleFrames": "head.png",
-      "mask": "mask.png",
+      "mask": "?submask=/items/armors/decorative/hats/eyepatch/mask.png",
       "statusEffects": []
     }
   }
