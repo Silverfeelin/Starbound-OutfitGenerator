@@ -42,7 +42,7 @@ namespace OutfitGenerator.Generators
                 bitmap = Crop(bitmap, 43, 0, 43, 43);
             }
 
-            // Gemerate
+            // Generate
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             // 01002B00 2B002B00
