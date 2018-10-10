@@ -22,31 +22,36 @@ namespace OutfitGenerator.Mergers
             Bitmap chestBitmap;
             Bitmap pantsBitmap;
 
-            Console.WriteLine("Is the order correct?");
-            Console.WriteLine("Chest image: " + firstPath);
-            Console.WriteLine("Pants image: " + secondPath);
-            Console.WriteLine("Press Enter if it is, press any key otherwise");
-
-            if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+            // Predict the correct order:
+            if (firstPath.ToLower().Contains("chest") && secondPath.ToLower().Contains("pants"))
             {
                 chestBitmap = new Bitmap(firstPath);
                 pantsBitmap = new Bitmap(secondPath);
             }
-            else
+            else if (firstPath.ToLower().Contains("pants") && secondPath.ToLower().Contains("chest"))
             {
                 chestBitmap = new Bitmap(secondPath);
                 pantsBitmap = new Bitmap(firstPath);
             }
-            /*
-            if (!Generator.ValidSheet(chestBitmap, chestSize) || !Generator.ValidSheet(pantsBitmap, pantsSize, pantsOldSize))
+            else //prediction failed
             {
-                Program.WaitAndExit("Incorrect size!\nExpected chest dimensions of {0}x{1} and pants dimensions of {2}x{3} or {4}x{5}.", 
-                    chestSize.Width, chestSize.Height,
-                    pantsSize.Width, pantsSize.Height,
-                    pantsOldSize.Width, pantsOldSize.Height);
-                return null;
+                Console.WriteLine("Is the order correct?");
+                Console.WriteLine("Chest image: " + firstPath);
+                Console.WriteLine("Pants image: " + secondPath);
+                Console.WriteLine("Press Enter if it is, press any key otherwise");
+
+                if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+                {
+                    chestBitmap = new Bitmap(firstPath);
+                    pantsBitmap = new Bitmap(secondPath);
+                }
+                else
+                {
+                    chestBitmap = new Bitmap(secondPath);
+                    pantsBitmap = new Bitmap(firstPath);
+                }
             }
-            */
+
             return ApplyMultingChestPants(chestBitmap, pantsBitmap);
         }
 

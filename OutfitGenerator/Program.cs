@@ -80,9 +80,10 @@ namespace OutfitGenerator
                 case 2:
                     // Prompt sprites to merge
                     generatorType = SelectGenerator(typeof(ChestPantsMerger), typeof(SleevesMerger));
+
+                    // Merge sprites
                     ISpriteMerger merger = (ISpriteMerger)Activator.CreateInstance(generatorType);
                     MergeSprites(merger, args[0], args[1]);
-                    // Merge sprites
                     break;
             }
         }
@@ -133,12 +134,34 @@ namespace OutfitGenerator
                 Bitmap merged = merger.Merge(a, b);
                 string file = string.Format("merged {0}.png", DateTime.Now.ToString("MM-dd h.mm.ss"));
                 merged.Save(file);
-                WaitAndExit("Saved image to {0}", file);
+                Console.WriteLine("Saved image to {0}", file);
+
+                //Propt to work with the saved image
+                if (PromptWorking())
+                {
+                    // Prompt clothing to generate
+                    Type generatorType = SelectGenerator(typeof(HatGenerator), typeof(MaskedHatGenerator), typeof(HidingHatGenerator), typeof(SleeveGenerator), typeof(PantsGenerator), typeof(HidingPantsGenerator), typeof(BackGenerator));
+
+                    // Generate clothing
+                    IClothingGenerator generator = (IClothingGenerator)Activator.CreateInstance(generatorType);
+                    GenerateClothing(generator, merged);
+                }
+                else
+                {
+                    WaitAndExit("Saved image to {0}", file);
+                }
             }
             catch (Exception exc)
             {
                 WaitAndExit("Failed to merge sprites: {0}", exc.Message);
             }
+        }
+
+        private static bool PromptWorking()
+        {
+            writer.WriteLine("Would you like to proceed the result? y/n");
+            string answer = Console.ReadLine();
+            return answer.ToLower().Equals("y") || answer.ToLower().Equals("yes");
         }
 
         public static void WaitAndExit(string message = null, params object[] args)
