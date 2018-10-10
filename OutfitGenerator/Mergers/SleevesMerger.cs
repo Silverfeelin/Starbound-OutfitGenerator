@@ -18,13 +18,24 @@ namespace OutfitGenerator.Mergers
             Bitmap frontSleeves;
             Bitmap backSleeves;
 
-            Console.WriteLine("Is the order correct?");
-            Console.WriteLine("front sleeve image: " + firstPath);
-            Console.WriteLine("back sleeve image: " + secondPath);
-            Console.WriteLine("Press Enter if it is, press any key otherwise");
-
-            try
+            // Predict the correct order:
+            if (firstPath.ToLower().Contains("fsleeve") && secondPath.ToLower().Contains("bsleeve"))
             {
+                frontSleeves = new Bitmap(firstPath);
+                backSleeves = new Bitmap(secondPath);
+            }
+            else if (firstPath.ToLower().Contains("bsleeve") && secondPath.ToLower().Contains("fsleeve"))
+            {
+                frontSleeves = new Bitmap(secondPath);
+                backSleeves = new Bitmap(firstPath);
+            }
+            else //prediction failed
+            {
+                Console.WriteLine("Is the order correct?");
+                Console.WriteLine("Front sleeve: " + firstPath);
+                Console.WriteLine("Back sleeve: " + secondPath);
+                Console.WriteLine("Press Enter if it is, press any key otherwise");
+
                 if (Console.ReadKey(true).Key == ConsoleKey.Enter)
                 {
                     frontSleeves = new Bitmap(firstPath);
@@ -36,20 +47,6 @@ namespace OutfitGenerator.Mergers
                     backSleeves = new Bitmap(firstPath);
                 }
             }
-            catch (ArgumentException)
-            {
-                Program.WaitAndExit($"The file \"{firstPath}\"  or \"{secondPath}\" is not a valid image or does not exist.");
-                return null;
-            }
-
-            /*
-            if (!Generator.ValidSheet(frontSleeves, sleevesSize) || !Generator.ValidSheet(frontSleeves, sleevesSize))
-            {
-                Program.WaitAndExit("Incorrect size!\nExpected sleeve dimensions of {0}x{1} for both files.",
-                    sleevesSize.Width, sleevesSize.Height);
-                return null;
-            }
-            */
 
             return ApllyMultingSleeves(frontSleeves, backSleeves);
         }
