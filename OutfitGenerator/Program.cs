@@ -11,11 +11,12 @@ namespace OutfitGenerator
 {
     class Program
     {
-        static ConsoleWriter writer = new ConsoleWriter(ConsoleColor.Cyan);
+        // Used to write to console.
+        static ConsoleWriter writer = new ConsoleWriter();
 
         static void Main(string[] args)
         {
-            writer.WriteLine("= Outfit Generator");
+            writer.WriteColorfulLine("$h=$l Outfit Generator");
 
             // Validate args
             if (!ValidateArgs(args))
@@ -59,8 +60,8 @@ namespace OutfitGenerator
             if (args.Length == 0 && args.Length > 0)
             {
                 writer.WriteLine(ConsoleColor.Red, "Invalid argument count.");
-                writer.WriteLine(ConsoleColor.Red, "#1: Path to image to create an outfit.");
-                writer.WriteLine(ConsoleColor.Red, "#2: Path to images to merge together.");
+                writer.WriteLine(ConsoleColor.Red, "arg #1: Path to image to create an outfit.");
+                writer.WriteLine(ConsoleColor.Red, "arg #2: Path to images to merge together.");
                 return false;
             }
 
@@ -70,8 +71,8 @@ namespace OutfitGenerator
             if (!existsA || !existsB)
             {
                 writer.WriteLine(ConsoleColor.Red, "Invalid arguments.");
-                if (!existsA) writer.WriteLine(ConsoleColor.Red, $"File {existsA} does not exist.");
-                if (!existsB) writer.WriteLine(ConsoleColor.Red, $"File {existsB} does not exist.");
+                if (!existsA) writer.WriteLine(ConsoleColor.Red, $"File {args[0]} does not exist.");
+                if (!existsB) writer.WriteLine(ConsoleColor.Red, $"File {args[1]} does not exist.");
                 return false;
             }
 
@@ -88,7 +89,7 @@ namespace OutfitGenerator
 
         static IClothingGenerator SelectGenerator()
         {
-            writer.WriteLine("Select a generator. [0] to exit.");
+            writer.WriteColorfulLine("Select a generator. $l[0]$0 to exit.");
             var type = typeof(IClothingGenerator);
             var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(type) && t.IsClass && !t.IsAbstract);
             var generators = types.Select(t => (IClothingGenerator)Activator.CreateInstance(t)).OrderBy(g => g.Priority).ToArray();
@@ -97,7 +98,7 @@ namespace OutfitGenerator
             for (int i = 0; i < generators.Count(); i++)
             {
                 var generator = generators[i];
-                writer.WriteLine(ConsoleColor.White, $"[{i + 1}] {generator.Name}");
+                writer.WriteColorfulLine($"$l[{i + 1}] $0{generator.Name}");
             }
 
             // Select option
@@ -105,6 +106,7 @@ namespace OutfitGenerator
             while (true)
             {
                 ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Escape) return null;
                 var c = cki.KeyChar;
                 if (!char.IsNumber(c))
                 {
@@ -128,21 +130,22 @@ namespace OutfitGenerator
         {
             ItemDescriptor item = generator.Generate(image);
             string s = CommandGenerator.SpawnItem(item);
-            FileSaver.Save(Directory.GetCurrentDirectory(), s);
+            var path = FileSaver.Save(Directory.GetCurrentDirectory(), s);
+            writer.WriteColorfulLine($"$kSaved command to:\n$h{path}$k");
         }
 
         static ISpriteMerger SelectMerger()
         {
-            writer.WriteLine("Select a sprite merger. [0] to exit.");
+            writer.WriteColorfulLine("Select a sprite merger. $l[0]$0 to exit.");
             var type = typeof(ISpriteMerger);
             var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(type) && t.IsClass && !t.IsAbstract);
-            var generators = types.Select(t => (ISpriteMerger)Activator.CreateInstance(t)).OrderBy(g => g.Priority).ToArray();
+            var mergers = types.Select(t => (ISpriteMerger)Activator.CreateInstance(t)).OrderBy(g => g.Priority).ToArray();
 
             // List options
-            for (int i = 0; i < generators.Count(); i++)
+            for (int i = 0; i < mergers.Count(); i++)
             {
-                var generator = generators[i];
-                writer.WriteLine(ConsoleColor.White, $"[{i + 1}] {generator.Name}");
+                var merger = mergers[i];
+                writer.WriteColorfulLine($"$l[{i + 1}] $0{merger.Name}");
             }
 
             // Select option
@@ -150,6 +153,7 @@ namespace OutfitGenerator
             while (true)
             {
                 ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Escape) return null;
                 var c = cki.KeyChar;
                 if (!char.IsNumber(c))
                 {
@@ -161,8 +165,8 @@ namespace OutfitGenerator
                     if (i == 0) return null;
                     i--;
 
-                    if (i < generators.Length)
-                        return generators[i];
+                    if (i < mergers.Length)
+                        return mergers[i];
                     else
                         writer.WriteLine(ConsoleColor.Red, "Number out of range. Try again.");
                 }
@@ -172,14 +176,15 @@ namespace OutfitGenerator
         static void MergeSprites(ISpriteMerger merger, Image<Rgba32> first, Image<Rgba32> second)
         {
             Image<Rgba32> merged = merger.Merge(first, second);
-            FileSaver.SaveImage(Directory.GetCurrentDirectory(), merged);                                                                                                                                                  
+            var path = FileSaver.SaveImage(Directory.GetCurrentDirectory(), merged);
+            writer.WriteColorfulLine($"$kSaved image to:\n$h{path}$k");
         }
 
         /* Writes an optional message, then waits for any keystroke before existing. */
         public static void WaitAndExit(string message = null, params object[] args)
         {
             if (!string.IsNullOrEmpty(message)) Console.WriteLine(message, args);
-            writer.WriteLine("Press any key to exit...");
+            writer.WriteColorfulLine("$hPress any key to exit...");
             Console.ReadKey(true);
             Environment.Exit(0);
         }

@@ -2,7 +2,6 @@
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
-using System;
 
 namespace OutfitGenerator.Mergers
 {
@@ -27,6 +26,7 @@ namespace OutfitGenerator.Mergers
             return ApplyMultingChestPants(chest, pants);
         }
 
+        /* This is Degranon's hocus pocus. */
         private static Image<Rgba32> ApplyMultingChestPants(Image<Rgba32> chest, Image<Rgba32> pants)
         {
             Image<Rgba32> result = pants.Clone();

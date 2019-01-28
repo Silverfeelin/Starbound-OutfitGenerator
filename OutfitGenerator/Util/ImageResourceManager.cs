@@ -14,7 +14,6 @@ namespace OutfitGenerator.Util
         );
 
         public static string GetResourcePath(string path) => Path.Combine(basePath, path);
-
         public static Image<Rgba32> GetImage(string path) => Image.Load<Rgba32>(GetResourcePath(path));
     }
 }

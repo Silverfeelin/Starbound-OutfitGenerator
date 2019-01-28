@@ -2,7 +2,7 @@
   "profiles": {
     "OutfitGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "F:\\Users\\Silver\\Documents\\GitHub\\Starbound\\Starbound-OutfitGenerator\\Core\\OutfitGenerator\\Resources\\test\\alucard.png"
+      "commandLineArgs": "F:\\Users\\Silver\\Documents\\GitHub\\Starbound\\Starbound-OutfitGenerator\\OutfitGenerator\\Resources\\test\\mergedsleeves.png"
     }
   }
 }

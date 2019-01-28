@@ -12,7 +12,7 @@ namespace OutfitGenerator.Util
         /// </summary>
         /// <param name="directory">Directory to save the file in.</param>
         /// <param name="content">File contents.</param>
-        /// <returns>Generated file name.</returns>
+        /// <returns>File path.</returns>
         public static string Save(string directoryPath, string content, string fileNamePrefix = "generatedPants-", string extension = ".txt")
         {
             string file = $"{fileNamePrefix}{DateTime.Now.ToString("h-mm-ss")}{extension}";
@@ -21,6 +21,12 @@ namespace OutfitGenerator.Util
             return filePath;
         }
 
+        /// <summary>
+        /// Saves the image to a directory.
+        /// </summary>
+        /// <param name="directoryPath">Directory to save the file in.</param>
+        /// <param name="image">Image to save.</param>
+        /// <returns>File path.</returns>
         public static string SaveImage(string directoryPath, Image<Rgba32> image, string fileNamePrefix = "merged-")
         {
             string file = $"{fileNamePrefix}{DateTime.Now.ToString("h-mm-ss")}.png";
