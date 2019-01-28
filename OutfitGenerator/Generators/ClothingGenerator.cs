@@ -1,53 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using Newtonsoft.Json.Linq;
-using OutfitGenerator.Util;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Primitives;
 
 namespace OutfitGenerator.Generators
 {
     public abstract class ClothingGenerator : IClothingGenerator
     {
+        public abstract string Name { get; }
+        public abstract int Priority { get; }
         public abstract string FileName {get;}
 
         public abstract ISet<Size> SupportedDimensions { get; }
 
-        public abstract Bitmap Template { get; }
-
-        public abstract byte[] Config { get; }
+        public abstract Image<Rgba32> Template { get; }
+        public abstract JObject Config { get; }
         
-        public virtual ItemDescriptor Generate(Bitmap bitmap)
+        public virtual ItemDescriptor Generate(Image<Rgba32> image)
         {
             // Parse arguments
-            if (bitmap == null)
-            {
-                throw new ArgumentNullException("Bitmap may not be null.");
-            }
+            if (image == null)
+                throw new ArgumentNullException("Image may not be null.");
 
-            if (!SupportedDimensions.Contains(bitmap.Size))
-            {
+            if (!SupportedDimensions.Contains(image.Size()))
                 throw new ArgumentException("Bitmap does not match any of the expected dimensions: " + String.Join(", ", SupportedDimensions));
-            }
-            
+
             // Load descriptor
-            JObject config = JsonResourceManager.GetJsonObject(Config);
-            ItemDescriptor descriptor = config["descriptor"].ToObject<ItemDescriptor>();
+            ItemDescriptor descriptor = Config["descriptor"].ToObject<ItemDescriptor>();
 
             // Generate and apply directives
             string directives = descriptor.Parameters["directives"].Value<string>();
-            directives = directives.Replace("{directives}", DirectiveGenerator.Generate(Template, bitmap));
+            directives = directives.Replace("{directives}", DirectiveGenerator.Generate(Template, image));
             descriptor.Parameters["directives"] = directives;
 
             return descriptor;
         }
 
         /// <summary>
-        /// Crops out the bottom (unused) row for larger pants sprites.
-        /// It's not really necessary, but whatever.
+        /// Crops an image.
         /// </summary>
-        public static Bitmap Crop(Bitmap bmp, int x, int y, int width, int height)
+        public static Image<Rgba32> Crop(Image<Rgba32> image, int x, int y, int width, int height)
         {
-            return bmp.Clone(new Rectangle(x, y, width, height), bmp.PixelFormat);
+            return image.Clone(ctx => ctx.Crop(new Rectangle(x, y, width, height)));
         }
     }
 }

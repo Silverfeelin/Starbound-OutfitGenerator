@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using Newtonsoft.Json.Linq;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.Primitives;
+using System.Collections.Generic;
 
 namespace OutfitGenerator.Generators
 {
     public interface IClothingGenerator
     {
+        string Name { get; }
+        int Priority { get; }
+
         /// <summary>
         /// Format for the exported file name.
         /// </summary>
@@ -17,12 +23,12 @@ namespace OutfitGenerator.Generators
         /// <summary>
         /// Gets the template used to generate directives.
         /// </summary>
-        Bitmap Template { get; }
+        Image<Rgba32> Template { get; }
 
         /// <summary>
         /// Gets the template configuration used to generate item descriptors.
         /// </summary>
-        byte[] Config { get; }
+        JObject Config { get; }
 
         /// <summary>
         /// Generates an item descriptor from the given image.
@@ -31,7 +37,7 @@ namespace OutfitGenerator.Generators
         /// </para>
         /// </summary>
         /// <param name="bitmap">Non-null Bitmap matching any of <see cref="SupportedDimensions"/>.</param>
-        /// <returns>Spawnable Item Descriptor</returns>
-        ItemDescriptor Generate(Bitmap bitmap);
+        /// <returns>Item Descriptor</returns>
+        ItemDescriptor Generate(Image<Rgba32> bitmap);
     }
 }

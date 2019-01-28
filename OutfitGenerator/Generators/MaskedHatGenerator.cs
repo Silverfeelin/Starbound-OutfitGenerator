@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using OutfitGenerator.Util;
 
 namespace OutfitGenerator.Generators
 {
     public class MaskedHatGenerator : HatGenerator
     {
-        public override byte[] Config => Properties.Resources.MaskedHatConfig;
+        public override string Name => "Hat (hide hair)";
+        public override int Priority => 20;
+
+        public override JObject Config => JsonResourceManager.GetJsonObject("MaskedHatConfig.json");
     }
 }

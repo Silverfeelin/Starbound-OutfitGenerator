@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OutfitGenerator
+namespace OutfitGenerator.Util
 {
     /// <summary>
     /// Simple helper class to write colored text to the standard output.

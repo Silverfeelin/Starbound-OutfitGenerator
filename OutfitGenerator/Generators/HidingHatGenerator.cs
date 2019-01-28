@@ -1,7 +1,13 @@
-﻿namespace OutfitGenerator.Generators
+﻿using Newtonsoft.Json.Linq;
+using OutfitGenerator.Util;
+
+namespace OutfitGenerator.Generators
 {
-    class HidingHatGenerator : HatGenerator
+    public class HidingHatGenerator : HatGenerator
     {
-        public override byte[] Config => Properties.Resources.HidingHatConfig;
+        public override string Name => "Hat (hide body)";
+        public override int Priority => 30;
+
+        public override JObject Config => JsonResourceManager.GetJsonObject("HidingHatConfig.json");
     }
 }

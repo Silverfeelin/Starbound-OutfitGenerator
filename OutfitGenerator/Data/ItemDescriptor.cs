@@ -6,12 +6,12 @@ namespace OutfitGenerator
     public class ItemDescriptor
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "perfectlygenericitem";
 
         [JsonProperty("count")]
         public int Count { get; set; } = 1;
 
-        [JsonProperty("parameters")]
+        [JsonProperty("parameters", NullValueHandling = NullValueHandling.Ignore)]
         public JObject Parameters { get; set; } = new JObject();
     }
 }

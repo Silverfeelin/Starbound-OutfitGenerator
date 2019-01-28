@@ -1,11 +1,16 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Primitives;
+using System;
 
 namespace OutfitGenerator.Mergers
 {
-    public class ChestPantsMerger : ISpriteMerger
+    public class ChestLegsMerger : ISpriteMerger
     {
+        public string Name => "Merge Chest & Legs";
+        public int Priority => 10;
+
         private const int FRAME_SIZE = 43;
         private const int PANTS_WIDTH = 387;
         private const int PANTS_HEIGHT = 258;
@@ -17,54 +22,26 @@ namespace OutfitGenerator.Mergers
         private static Size pantsSize = new Size(PANTS_WIDTH, PANTS_HEIGHT);
         private static Size pantsOldSize = new Size(PANTS_WIDTH, PANTS_OLD_HEIGHT);
         
-        public Bitmap Merge(string firstPath, string secondPath)
+        public Image<Rgba32> Merge(Image<Rgba32> chest, Image<Rgba32> pants)
         {
-            Bitmap chestBitmap;
-            Bitmap pantsBitmap;
-
-            Console.WriteLine("Is the order correct?");
-            Console.WriteLine("Chest image: " + firstPath);
-            Console.WriteLine("Pants image: " + secondPath);
-            Console.WriteLine("Press Enter if it is, press any key otherwise");
-
-            if (Console.ReadKey(true).Key == ConsoleKey.Enter)
-            {
-                chestBitmap = new Bitmap(firstPath);
-                pantsBitmap = new Bitmap(secondPath);
-            }
-            else
-            {
-                chestBitmap = new Bitmap(secondPath);
-                pantsBitmap = new Bitmap(firstPath);
-            }
-            /*
-            if (!Generator.ValidSheet(chestBitmap, chestSize) || !Generator.ValidSheet(pantsBitmap, pantsSize, pantsOldSize))
-            {
-                Program.WaitAndExit("Incorrect size!\nExpected chest dimensions of {0}x{1} and pants dimensions of {2}x{3} or {4}x{5}.", 
-                    chestSize.Width, chestSize.Height,
-                    pantsSize.Width, pantsSize.Height,
-                    pantsOldSize.Width, pantsOldSize.Height);
-                return null;
-            }
-            */
-            return ApplyMultingChestPants(chestBitmap, pantsBitmap);
+            return ApplyMultingChestPants(chest, pants);
         }
 
-        private static Bitmap ApplyMultingChestPants(Bitmap chest, Bitmap pants)
+        private static Image<Rgba32> ApplyMultingChestPants(Image<Rgba32> chest, Image<Rgba32> pants)
         {
-            Bitmap result = new Bitmap(pants);
+            Image<Rgba32> result = pants.Clone();
 
-            Bitmap chestIdle = chest.Clone(new Rectangle(FRAME_SIZE, 0, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
-            Bitmap chestIdle2 = chest.Clone(new Rectangle(0, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
-            Bitmap chestIdle3 = chest.Clone(new Rectangle(FRAME_SIZE, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
+            Image<Rgba32> chestIdle = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, 0, FRAME_SIZE, FRAME_SIZE)));
+            Image<Rgba32> chestIdle2 = chest.Clone(ctx => ctx.Crop(new Rectangle(0, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE)));
+            Image<Rgba32> chestIdle3 = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, FRAME_SIZE, FRAME_SIZE, FRAME_SIZE)));
 
-            Bitmap chestRun = chest.Clone(new Rectangle(FRAME_SIZE, FRAME_SIZE * 2, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
+            Image<Rgba32> chestRun = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, FRAME_SIZE * 2, FRAME_SIZE, FRAME_SIZE)));
 
-            Bitmap chestDuck = chest.Clone(new Rectangle(FRAME_SIZE, FRAME_SIZE * 3, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
+            Image<Rgba32> chestDuck = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, FRAME_SIZE * 3, FRAME_SIZE, FRAME_SIZE)));
 
-            Bitmap chestClimb = chest.Clone(new Rectangle(FRAME_SIZE, FRAME_SIZE * 4, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
-            Bitmap chestSwim = chest.Clone(new Rectangle(FRAME_SIZE, FRAME_SIZE * 5, FRAME_SIZE, FRAME_SIZE), chest.PixelFormat);
-
+            Image<Rgba32> chestClimb = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, FRAME_SIZE * 4, FRAME_SIZE, FRAME_SIZE)));
+            Image<Rgba32> chestSwim = chest.Clone(ctx => ctx.Crop(new Rectangle(FRAME_SIZE, FRAME_SIZE * 5, FRAME_SIZE, FRAME_SIZE)));
+            
             // Personality 1,5
             SuperImpose(result, chestIdle, FRAME_SIZE, 0);
             SuperImpose(result, chestIdle, FRAME_SIZE * 5, 0);
@@ -134,10 +111,9 @@ namespace OutfitGenerator.Mergers
             return result;
         }
 
-        private static void SuperImpose( Bitmap largeBmp, Bitmap smallBmp, int x, int y)
+        private static void SuperImpose(Image<Rgba32> largeBmp, Image<Rgba32> smallBmp, int x, int y)
         {
-            Graphics g = Graphics.FromImage(largeBmp);
-            g.DrawImage(smallBmp, x, y, smallBmp.Width, smallBmp.Height);
+            largeBmp.Mutate(ctx => ctx.DrawImage(smallBmp, new Point(x, y), 1));
         }
     }
 }

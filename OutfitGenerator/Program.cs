@@ -1,156 +1,186 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
-using OutfitGenerator.Generators;
+﻿using OutfitGenerator.Generators;
 using OutfitGenerator.Mergers;
 using OutfitGenerator.Util;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace OutfitGenerator
 {
     class Program
     {
-        private static ConsoleWriter writer;
-        private static readonly Dictionary<Type, string> visualNames = new Dictionary<Type, string>()
-        {
-            { typeof(HatGenerator), "Hat" },
-            { typeof(MaskedHatGenerator), "Hat (Hide hair)" },
-            { typeof(HidingHatGenerator), "Hat (Hide body)" },
-            { typeof(SleeveGenerator), "Sleeves" },
-            { typeof(PantsGenerator), "Pants" },
-            { typeof(HidingPantsGenerator), "Pants (Hide body)" },
-            { typeof(BackGenerator), "Back Item" },
+        static ConsoleWriter writer = new ConsoleWriter(ConsoleColor.Cyan);
 
-            { typeof(ChestPantsMerger), "Merge Chest & Pants" },
-            { typeof(SleevesMerger), "Merge Sleeves" }
-        };
-
-        // TODO: Clean this method up a bit more.
-        [STAThread]
         static void Main(string[] args)
         {
-            writer = new ConsoleWriter(ConsoleColor.Cyan);
             writer.WriteLine("= Outfit Generator");
-            Console.WriteLine();
 
-            writer.WriteLine("Select the desired generator:");
-
-            if (args.Length > 2)
+            // Validate args
+            if (!ValidateArgs(args))
             {
-                WaitAndExit($"Invalid number of parameters: {args.Length}. Expected 1 for outfit generation or 2 for sprite merging.");
+                WaitAndExit();
                 return;
             }
 
-            // Read images.
-            Bitmap[] images = new Bitmap[args.Length];
+            // Read images
+            Image<Rgba32>[] images;
             try
             {
-                for (int i = 0; i < args.Length; i++)
-                {
-                    images[i] = new Bitmap(args[i]);
-                }
+                images = ValidateImages(args);
             }
             catch (Exception exc)
             {
-                WaitAndExit("Couldn't read image file: {0}", exc.Message);
+                writer.WriteLine(ConsoleColor.Red, "Invalid image file. Details:");
+                writer.WriteLine(ConsoleColor.Red, exc.ToString());
+                WaitAndExit();
                 return;
             }
 
-            // Prompt generator/merge type.
-            Type generatorType;
-            switch (args.Length)
+            // Select generator/merger
+            if (args.Length == 1)
             {
-                case 0:
-                    WaitAndExit("Please drag and drop a valid image on the application (not this window).");
-                    break;
-                case 1:
-                    // Prompt clothing to generate
-                    generatorType = SelectGenerator(typeof(HatGenerator), typeof(MaskedHatGenerator), typeof(HidingHatGenerator), typeof(SleeveGenerator), typeof(PantsGenerator), typeof(HidingPantsGenerator), typeof(BackGenerator));
-
-                    // Generate clothing
-                    IClothingGenerator generator = (IClothingGenerator)Activator.CreateInstance(generatorType);
-                    GenerateClothing(generator, images[0]);
-                    break;
-                case 2:
-                    // Prompt sprites to merge
-                    generatorType = SelectGenerator(typeof(ChestPantsMerger), typeof(SleevesMerger));
-                    ISpriteMerger merger = (ISpriteMerger)Activator.CreateInstance(generatorType);
-                    MergeSprites(merger, args[0], args[1]);
-                    // Merge sprites
-                    break;
+                var generator = SelectGenerator();
+                if (generator == null) return;
+                GenerateClothing(generator, images[0]);
+            }
+            else if (args.Length == 2)
+            {
+                var merger = SelectMerger();
+                if (merger == null) return;
+                MergeSprites(merger, images[0], images[1]);
             }
         }
 
-        private static Type SelectGenerator(params Type[] typeNames)
+        /* Returns a value indicating whether the arg count is correct and all args are existing files */
+        static bool ValidateArgs(string[] args)
         {
-            for (int i = 0; i < typeNames.Length; i++)
+            if (args.Length == 0 && args.Length > 0)
             {
-                string visualName = visualNames[typeNames[i]];
-                writer.WriteLine($"[{i + 1}]: {visualName}");
+                writer.WriteLine(ConsoleColor.Red, "Invalid argument count.");
+                writer.WriteLine(ConsoleColor.Red, "#1: Path to image to create an outfit.");
+                writer.WriteLine(ConsoleColor.Red, "#2: Path to images to merge together.");
+                return false;
             }
 
+            bool existsA, existsB = true;
+            existsA = File.Exists(args[0]);
+            if (args.Length > 1) existsB = File.Exists(args[1]);
+            if (!existsA || !existsB)
+            {
+                writer.WriteLine(ConsoleColor.Red, "Invalid arguments.");
+                if (!existsA) writer.WriteLine(ConsoleColor.Red, $"File {existsA} does not exist.");
+                if (!existsB) writer.WriteLine(ConsoleColor.Red, $"File {existsB} does not exist.");
+                return false;
+            }
+
+            return true;
+        }
+
+        /* Returns an array of images from the given file paths */
+        static Image<Rgba32>[] ValidateImages(string[] imagePaths)
+        {
+            var images = new Image<Rgba32>[imagePaths.Length];
+            for (int i = 0; i < imagePaths.Length; i++) images[i] = Image.Load<Rgba32>(imagePaths[i]);
+            return images;
+        }
+
+        static IClothingGenerator SelectGenerator()
+        {
+            writer.WriteLine("Select a generator. [0] to exit.");
+            var type = typeof(IClothingGenerator);
+            var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(type) && t.IsClass && !t.IsAbstract);
+            var generators = types.Select(t => (IClothingGenerator)Activator.CreateInstance(t)).OrderBy(g => g.Priority).ToArray();
+
+            // List options
+            for (int i = 0; i < generators.Count(); i++)
+            {
+                var generator = generators[i];
+                writer.WriteLine(ConsoleColor.White, $"[{i + 1}] {generator.Name}");
+            }
+
+            // Select option
+            // Only works up to 10 choices (0-9)!
             while (true)
             {
                 ConsoleKeyInfo cki = Console.ReadKey(true);
-
-                if (char.IsNumber(cki.KeyChar))
+                var c = cki.KeyChar;
+                if (!char.IsNumber(c))
                 {
-                    int choice = (cki.KeyChar - '0');
+                    writer.WriteLine(ConsoleColor.Red, "Not a number. Try again.");
+                }
+                else
+                {
+                    var i = c - '0';
+                    if (i == 0) return null;
+                    i--;
 
-                    if (--choice < typeNames.Length)
-                        return typeNames[choice];
+                    if (i < generators.Length)
+                        return generators[i];
+                    else
+                        writer.WriteLine(ConsoleColor.Red, "Number out of range. Try again.");
                 }
             }
         }
 
-        private static void GenerateClothing(IClothingGenerator generator, Bitmap bmp)
+        static void GenerateClothing(IClothingGenerator generator, Image<Rgba32> image)
         {
-            try
-            {
-                ItemDescriptor item = generator.Generate(bmp);
-                string s = CommandGenerator.SpawnItem(item);
-                string file = string.Format("{0} {1}.txt", generator.FileName, DateTime.Now.ToString("MM-dd h.mm.ss"));
-                File.WriteAllText(file, s);
-                Clipboard.SetText(s);
-                WaitAndExit("Saved command to {0} and copied into clipboard", file);
-            }
-            catch (Exception exc)
-            {
-                WaitAndExit("Failed to create clothing: {0}", exc.Message);
-            }
+            ItemDescriptor item = generator.Generate(image);
+            string s = CommandGenerator.SpawnItem(item);
+            FileSaver.Save(Directory.GetCurrentDirectory(), s);
         }
 
-        private static void MergeSprites(ISpriteMerger merger, string a, string b)
+        static ISpriteMerger SelectMerger()
         {
-            try
+            writer.WriteLine("Select a sprite merger. [0] to exit.");
+            var type = typeof(ISpriteMerger);
+            var types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(type) && t.IsClass && !t.IsAbstract);
+            var generators = types.Select(t => (ISpriteMerger)Activator.CreateInstance(t)).OrderBy(g => g.Priority).ToArray();
+
+            // List options
+            for (int i = 0; i < generators.Count(); i++)
             {
-                Bitmap merged = merger.Merge(a, b);
-                string file = string.Format("merged {0}.png", DateTime.Now.ToString("MM-dd h.mm.ss"));
-                merged.Save(file);
-                WaitAndExit("Saved image to {0}", file);
+                var generator = generators[i];
+                writer.WriteLine(ConsoleColor.White, $"[{i + 1}] {generator.Name}");
             }
-            catch (Exception exc)
+
+            // Select option
+            // Only works up to 10 choices (0-9)!
+            while (true)
             {
-                WaitAndExit("Failed to merge sprites: {0}", exc.Message);
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+                var c = cki.KeyChar;
+                if (!char.IsNumber(c))
+                {
+                    writer.WriteLine(ConsoleColor.Red, "Not a number. Try again.");
+                }
+                else
+                {
+                    var i = c - '0';
+                    if (i == 0) return null;
+                    i--;
+
+                    if (i < generators.Length)
+                        return generators[i];
+                    else
+                        writer.WriteLine(ConsoleColor.Red, "Number out of range. Try again.");
+                }
             }
         }
+        
+        static void MergeSprites(ISpriteMerger merger, Image<Rgba32> first, Image<Rgba32> second)
+        {
+            Image<Rgba32> merged = merger.Merge(first, second);
+            FileSaver.SaveImage(Directory.GetCurrentDirectory(), merged);                                                                                                                                                  
+        }
 
+        /* Writes an optional message, then waits for any keystroke before existing. */
         public static void WaitAndExit(string message = null, params object[] args)
         {
-            if (!string.IsNullOrEmpty(message))
-            {
-                Console.WriteLine(message, args);
-            }
+            if (!string.IsNullOrEmpty(message)) Console.WriteLine(message, args);
             writer.WriteLine("Press any key to exit...");
-
             Console.ReadKey(true);
-
             Environment.Exit(0);
         }
     }

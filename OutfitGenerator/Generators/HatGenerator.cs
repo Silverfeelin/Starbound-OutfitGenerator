@@ -1,14 +1,19 @@
 ﻿using Newtonsoft.Json.Linq;
 using OutfitGenerator.Util;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Primitives;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace OutfitGenerator.Generators
 {
     public class HatGenerator : ClothingGenerator
     {
+        public override string Name => "Hat";
+        public override int Priority => 10;
         public override string FileName => "hat";
 
         private readonly ISet<Size> _supportedDimensions = new HashSet<Size>()
@@ -16,34 +21,32 @@ namespace OutfitGenerator.Generators
             new Size(86, 215),
             new Size(43, 43)
         };
-
         public override ISet<Size> SupportedDimensions => _supportedDimensions;
 
-        public override Bitmap Template => null;
+        public override Image<Rgba32> Template => null;
+        public override JObject Config => JsonResourceManager.GetJsonObject("HatConfig.json");
 
-        public override byte[] Config => Properties.Resources.HatConfig;
-
-        public override ItemDescriptor Generate(Bitmap bitmap)
+        public override ItemDescriptor Generate(Image<Rgba32> image)
         {
             // Parse arguments
-            if (bitmap == null)
+            if (image == null)
             {
                 throw new ArgumentNullException("Bitmap may not be null.");
             }
 
-            if (!SupportedDimensions.Contains(bitmap.Size))
+            if (!SupportedDimensions.Contains(image.Size()))
             {
                 throw new ArgumentException("Bitmap does not match any of the expected dimensions: " + String.Join(", ", SupportedDimensions));
             }
 
             // Crop
-            if (bitmap?.Height == 215)
+            if (image?.Height == 215)
             {
-                bitmap = Crop(bitmap, 43, 0, 43, 43);
+                image = Crop(image, 43, 0, 43, 43);
             }
 
-            // Gemerate
-            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            // Generate
+            var flipped = image.Clone(ctx => ctx.Flip(FlipMode.Vertical));
 
             // 01002B00 2B002B00
             // 01000100 2B000100
@@ -57,32 +60,23 @@ namespace OutfitGenerator.Generators
             {
                 for (int y = 0; y < 43; y++)
                 {
-                    Color pixel = bitmap.GetPixel(x, y);
+                    Rgba32 pixel = flipped[x, y];
                     if (pixel.A == 0) continue;
 
                     dir.AppendFormat(";{0}00{1}00={2}",
                         x.ToString("X2"),
                         y.ToString("X2"),
-                        ColorToString(pixel));
+                        DirectiveGenerator.ColorToString(pixel));
                 }
             }
 
             // Load descriptor
-            JObject config = JsonResourceManager.GetJsonObject(Config);
-            ItemDescriptor descriptor = config["descriptor"].ToObject<ItemDescriptor>();
+            ItemDescriptor descriptor = Config["descriptor"].ToObject<ItemDescriptor>();
 
             // Generate and apply directives
             descriptor.Parameters["directives"] = dir.ToString();
 
             return descriptor;
-        }
-
-        public string ColorToString(Color color)
-        {
-            return color.R.ToString("X2") +
-                color.G.ToString("X2") +
-                color.B.ToString("X2") +
-                color.A.ToString("X2");
         }
     }
 }

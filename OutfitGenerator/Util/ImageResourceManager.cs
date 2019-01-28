@@ -1,9 +1,12 @@
 ﻿using System.IO;
+using System.Text;
 using Newtonsoft.Json.Linq;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace OutfitGenerator.Util
 {
-    public static class JsonResourceManager
+    public static class ImageResourceManager
     {
         public static string basePath = Path.Combine(
             Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location),
@@ -12,10 +15,6 @@ namespace OutfitGenerator.Util
 
         public static string GetResourcePath(string path) => Path.Combine(basePath, path);
 
-        private static string ReadFile(string path) => File.ReadAllText(GetResourcePath(path));
-
-        public static JObject GetJsonObject(string path) => JObject.Parse(ReadFile(path));
-
-        public static JArray GetJsonArray(string path) => JArray.Parse(ReadFile(path));
+        public static Image<Rgba32> GetImage(string path) => Image.Load<Rgba32>(GetResourcePath(path));
     }
 }
