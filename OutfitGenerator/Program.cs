@@ -130,7 +130,7 @@ namespace OutfitGenerator
         {
             ItemDescriptor item = generator.Generate(image);
             string s = CommandGenerator.SpawnItem(item);
-            var path = FileSaver.Save(Directory.GetCurrentDirectory(), s);
+            var path = FileSaver.Save(Directory.GetCurrentDirectory(), s, $"{generator.FileName ?? "outfitGenerator"}_");
             writer.WriteColorfulLine($"$kSaved command to:\n$h{path}$k");
         }
 
