@@ -1,5 +1,7 @@
 # Starbound Outfit Generator
 
+> <h2>You can now use the <a href="https://silverfeelin.github.io/Starbound-NgOutfitGenerator/">online Outfit Generator</a>!</h2>
+
 A tool that specializes in creating multiplayer compatible custom animated clothing using [Nettle Boy's directives](http://ilovebacons.com/threads/guide-to-re-animating-clothes-with-json.12019/page-5#post-92288) methods.
 
 #### Why pants?
