@@ -21,13 +21,6 @@ namespace OutfitGenerator.Generators
         
         public override ItemDescriptor Generate(Bitmap bitmap)
         {
-            // Warn of memory leak (https://github.com/Silverfeelin/Starbound-OutfitGenerator/issues/1)
-            Console.WriteLine("== WARNING ==");
-            Console.WriteLine("Please note that the 64-bit build of Starbound (1.3.1) has a memory leak, which generated sleeves suffer from.");
-            Console.WriteLine("Consider using the 32-bit build of Starbound instead.");
-            Console.WriteLine("If anyone else suffers from this problem, please recommend this temporary solution.");
-            Console.WriteLine("=============");
-
             return base.Generate(bitmap);
         }
     }
